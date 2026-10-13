@@ -1,0 +1,501 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Demo de landing en Shopify · Marco Celaya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;500;600;700&family=Young+Serif&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cob:#1C24B8; --lila:#E4E1F6; --lila2:#C9CCF5; --sec:#4A4F9E; --line:#B7B3E6; --am:#FFD84D;
+  --ink:#14151A; --mut:#5B5F6B; --ln:#E7E7EE; --soft:#F5F5F8; --white:#FFFFFF; --dark:#2A2C33;
+  --ac:#0E6B5C;
+  --serif:"Young Serif", Georgia, serif;
+  --sans:"Familjen Grotesk", "Helvetica Neue", Helvetica, sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--lila);color:var(--cob);font-family:var(--sans);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+button{font:inherit;cursor:pointer}
+a{color:inherit}
+.wrap{max-width:1280px;margin:0 auto;padding:0 16px}
+
+/* Encabezado de la demo */
+.top{background:var(--cob);color:var(--lila)}
+.top .wrap{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:flex-end;justify-content:space-between;padding-top:28px;padding-bottom:24px}
+.eyebrow{font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--lila2);margin:0 0 6px}
+.top h1{font-family:var(--serif);font-weight:400;font-size:clamp(26px,4vw,40px);line-height:1.1;margin:0}
+.top h1 .y{box-shadow:inset 0 -.32em 0 var(--am);color:var(--lila)}
+.top p.sub{margin:8px 0 0;color:var(--lila2);max-width:640px}
+.reset{background:transparent;color:var(--lila);border:1.5px solid var(--lila2);border-radius:999px;padding:8px 16px;font-size:14px}
+.reset:hover{background:var(--lila);color:var(--cob)}
+
+/* Selector de producto */
+.switch{padding:20px 0 4px}
+.switch .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px}
+.switch .lbl{font-weight:600;margin-right:4px}
+.chip{border:1.5px solid var(--cob);background:transparent;color:var(--cob);border-radius:999px;padding:8px 16px;font-size:15px}
+.chip[aria-selected="true"]{background:var(--cob);color:var(--lila)}
+.switch .hint{flex-basis:100%;color:var(--sec);font-size:14px;margin:0}
+
+/* Escenario: dos lados */
+.stage{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:28px;padding:20px 16px 36px;align-items:start}
+.side > h2{font-family:var(--serif);font-weight:400;font-size:22px;margin:0 0 12px;display:flex;align-items:center;gap:10px}
+.side > h2::before{content:"";width:28px;height:3px;background:var(--am);display:inline-block}
+@media (max-width:900px){.stage{grid-template-columns:minmax(0,1fr)}}
+
+/* Celular */
+.phone{position:relative;overflow:hidden;width:100%;max-width:400px;height:min(800px,82vh);min-height:560px;border-radius:36px;background:var(--dark);padding:12px;box-shadow:0 1px 0 var(--line)}
+.screen{position:relative;height:100%;overflow-y:auto;overflow-x:hidden;border-radius:26px;background:var(--white);color:var(--ink);scroll-behavior:smooth;scrollbar-width:thin}
+@media (max-width:480px){.phone{border-radius:24px;padding:6px;height:78vh}.screen{border-radius:18px}}
+
+/* Landing (lo que ve el comprador) */
+.ann{background:var(--ink);color:#fff;font-size:12px;text-align:center;padding:7px 10px}
+.lhead{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;border-bottom:1px solid var(--ln);position:sticky;top:0;background:#fff;z-index:4}
+.logo{font-weight:700;letter-spacing:.02em;font-size:15px;color:var(--ink)}
+.cartbtn{position:relative;background:none;border:0;padding:6px;color:var(--ink)}
+.badge{position:absolute;top:-2px;right:-4px;min-width:18px;height:18px;border-radius:9px;background:var(--ac);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;padding:0 4px}
+.lsec{padding:22px 16px;border-bottom:1px solid var(--ln);position:relative}
+.lsec h2{font-size:20px;line-height:1.2;margin:0 0 12px;color:var(--ink);font-weight:700}
+.media{position:relative;border-radius:14px;background:var(--soft);aspect-ratio:4/3;display:grid;place-items:center;overflow:hidden}
+.media svg{width:86%;height:auto}
+.vidtag{position:absolute;left:10px;bottom:10px;background:rgba(20,21,26,.82);color:#fff;font-size:11px;padding:4px 8px;border-radius:6px}
+.play{position:absolute;right:10px;bottom:10px;width:34px;height:34px;border-radius:50%;background:#fff;display:grid;place-items:center}
+.thumbs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 0 14px}
+.thumbs div{aspect-ratio:1;border-radius:10px;background:var(--soft);display:grid;place-items:center;font-size:10px;color:var(--mut);text-align:center;padding:4px;border:1.5px solid transparent}
+.thumbs div:first-child{border-color:var(--ac)}
+.pname{font-size:23px;line-height:1.15;margin:0;color:var(--ink);font-weight:700}
+.hook{margin:6px 0 8px;color:var(--mut);font-size:15px}
+.stars{font-size:13px;color:var(--mut);margin:0 0 10px}
+.stars b{color:var(--ink);letter-spacing:1px}
+.price{display:flex;flex-direction:column;margin:0 0 12px}
+.price strong{font-size:26px;color:var(--ink)}
+.price small{font-size:11px;color:var(--mut)}
+.packs{border:0;margin:0 0 12px;padding:0;display:grid;gap:8px}
+.packs legend{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:6px;padding:0}
+.pack{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;border:1.5px solid var(--ln);border-radius:12px;padding:10px 12px;cursor:pointer;color:var(--ink)}
+.pack input{accent-color:var(--ac);width:18px;height:18px;margin:0}
+.pack .pl{font-weight:600;font-size:15px}
+.pack .ps{display:block;font-size:12px;color:var(--ac);font-weight:600}
+.pack .pp{font-weight:700;font-size:15px;text-align:right}
+.pack:has(input:checked){border-color:var(--ac);background:color-mix(in srgb,var(--ac) 7%,#fff)}
+.buy{width:100%;border:0;border-radius:12px;background:var(--ac);color:#fff;font-weight:700;font-size:16px;padding:15px 12px}
+.trust{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:6px;font-size:13px;color:var(--ink)}
+.trust li{display:flex;gap:8px;align-items:center}
+.trust svg{flex:none}
+.trust a{text-decoration:underline;text-underline-offset:2px}
+.ben{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ben div{background:var(--soft);border-radius:12px;padding:12px}
+.ben .n{font-size:12px;font-weight:700;color:var(--ac);letter-spacing:.06em}
+.ben h3{font-size:15px;margin:4px 0 2px;color:var(--ink)}
+.ben p{margin:0;font-size:13px;color:var(--mut)}
+.steps{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:s}
+.steps li{display:grid;grid-template-columns:34px 1fr;gap:10px;align-items:start;counter-increment:s}
+.steps li::before{content:counter(s);width:34px;height:34px;border-radius:50%;background:var(--ac);color:#fff;font-weight:700;display:grid;place-items:center}
+.steps b{display:block;color:var(--ink)}
+.steps span{font-size:13px;color:var(--mut)}
+.cmp{width:100%;border-collapse:collapse;font-size:13px;color:var(--ink)}
+.cmp th,.cmp td{padding:9px 6px;border-bottom:1px solid var(--ln);text-align:center}
+.cmp th:first-child,.cmp td:first-child{text-align:left}
+.cmp thead th{font-size:12px;color:var(--mut);font-weight:600}
+.cmp thead th.us{color:var(--ac)}
+.cmp .yes{color:var(--ac);font-weight:700}
+.cmp .no{color:var(--mut)}
+.revs{display:grid;gap:10px}
+.rev{border:1.5px dashed var(--ln);border-radius:12px;padding:12px;display:grid;grid-template-columns:56px 1fr;gap:10px;align-items:center;font-size:13px;color:var(--mut)}
+.rev .ph{aspect-ratio:1;border-radius:8px;background:var(--soft);display:grid;place-items:center;font-size:9px;text-align:center}
+.rev b{color:var(--ink);font-size:12px}
+.note{font-size:12px;color:var(--mut);margin:10px 0 0}
+.offer p{margin:0 0 10px;font-size:14px;color:var(--ink)}
+.olist{display:grid;gap:8px}
+.orow{display:flex;justify-content:space-between;align-items:center;gap:10px;border:1.5px solid var(--ln);border-radius:12px;padding:10px 12px;color:var(--ink);font-size:14px}
+.orow button{border:1.5px solid var(--ac);background:#fff;color:var(--ac);border-radius:999px;padding:6px 12px;font-size:13px;font-weight:600}
+.orow.sel button{background:var(--ac);color:#fff}
+.faq{display:grid}
+.faq button{display:flex;justify-content:space-between;gap:10px;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--ln);padding:12px 0;font-weight:600;font-size:15px;color:var(--ink)}
+.faq button::after{content:"+";font-weight:400;font-size:20px;line-height:1;color:var(--mut)}
+.faq button[aria-expanded="true"]::after{content:"–"}
+.faq .ans{display:none;font-size:14px;color:var(--mut);padding:8px 0 12px}
+.faq button[aria-expanded="true"] + .ans{display:block}
+.legal{background:var(--soft);font-size:12px;color:var(--mut)}
+.legal .row{display:flex;flex-wrap:wrap;gap:6px 14px;margin:8px 0}
+.legal a{color:var(--ink)}
+.legal .arrep{display:inline-block;border:1.5px solid var(--ink);border-radius:8px;padding:6px 10px;font-weight:700;text-decoration:none;margin-top:4px}
+.sticky{position:sticky;bottom:0;z-index:5;background:#fff;border-top:1px solid var(--ln);padding:10px 12px;display:flex;align-items:center;gap:10px;transform:translateY(110%);transition:transform .25s ease;margin-top:-1px}
+.sticky.on{transform:none}
+.sticky .si{flex:1;min-width:0;font-size:12px;color:var(--mut);line-height:1.2}
+.sticky .si b{display:block;color:var(--ink);font-size:15px}
+.sticky button{border:0;border-radius:10px;background:var(--ac);color:#fff;font-weight:700;padding:12px 14px;font-size:14px;white-space:nowrap}
+
+/* Etiquetas de sección (modo "cómo está armada") */
+.show-labels [data-sec]{outline:2px dashed var(--am);outline-offset:-4px}
+.show-labels [data-sec]::before{content:attr(data-sec);position:absolute;top:6px;right:6px;z-index:3;background:var(--cob);color:var(--lila);font:600 11px/1 var(--sans);padding:5px 7px;border-radius:6px;pointer-events:none}
+.show-labels .sticky::before{top:-26px}
+.show-labels .lsec.cur{box-shadow:inset 4px 0 0 var(--am)}
+
+/* Carrito */
+.drawer{position:absolute;inset:12px;border-radius:26px;background:#fff;color:var(--ink);z-index:10;display:flex;flex-direction:column;transform:translateX(105%);transition:transform .25s ease;visibility:hidden}
+.drawer.on{transform:none;visibility:visible}
+.drawer header{display:flex;justify-content:space-between;align-items:center;padding:16px;border-bottom:1px solid var(--ln)}
+.drawer header b{font-size:17px}
+.x{background:none;border:0;font-size:22px;line-height:1;color:var(--ink);padding:4px 8px}
+.lines{flex:1;overflow:auto;padding:8px 16px}
+.line{display:grid;grid-template-columns:52px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--ln)}
+.line .th{aspect-ratio:1;border-radius:8px;background:var(--soft);display:grid;place-items:center}
+.line .th svg{width:90%}
+.line .ln1{font-size:14px;font-weight:600}
+.line .ln2{font-size:12px;color:var(--mut)}
+.qty{display:flex;align-items:center;gap:8px;margin-top:6px;font-size:14px}
+.qty button{width:28px;height:28px;border:1.5px solid var(--ln);background:#fff;border-radius:8px;color:var(--ink)}
+.qty .rm{width:auto;border:0;background:none;color:var(--mut);text-decoration:underline;font-size:12px;margin-left:auto}
+.empty{color:var(--mut);font-size:14px;padding:20px 0}
+.dfoot{padding:14px 16px;border-top:1px solid var(--ln)}
+.dfoot .tot{display:flex;justify-content:space-between;font-weight:700;font-size:16px}
+.dfoot small{display:block;color:var(--mut);font-size:11px;margin:4px 0 10px}
+.dfoot .go{width:100%;border:0;border-radius:12px;background:var(--ac);color:#fff;font-weight:700;padding:14px;font-size:15px}
+.dfoot .go:disabled{opacity:.45;cursor:not-allowed}
+.ck{position:absolute;inset:12px;border-radius:26px;background:var(--cob);color:var(--lila);z-index:11;display:none;flex-direction:column;justify-content:center;padding:28px;gap:14px}
+.ck.on{display:flex}
+.ck h3{font-family:var(--serif);font-weight:400;font-size:24px;margin:0}
+.ck p{margin:0;color:var(--lila2)}
+.ck button{align-self:flex-start;background:var(--am);color:var(--cob);border:0;border-radius:999px;padding:10px 18px;font-weight:700}
+.toast{position:absolute;left:50%;bottom:84px;transform:translateX(-50%);background:var(--ink);color:#fff;font-size:12px;padding:8px 12px;border-radius:8px;z-index:12;width:max-content;max-width:86%;text-align:center;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:1}
+@media (max-width:480px){.drawer,.ck{inset:6px;border-radius:18px}}
+
+/* Lado de atrás */
+.card{background:#fff;border:1.5px solid var(--line);border-radius:16px;padding:16px;margin-bottom:16px;container-type:inline-size}
+.card h3{font-size:16px;margin:0 0 4px;color:var(--cob)}
+.card .cap{font-size:13px;color:var(--sec);margin:0 0 12px}
+.card code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;background:var(--lila);padding:1px 5px;border-radius:4px;overflow-wrap:anywhere}
+.secs{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr;gap:6px}
+@container (min-width:520px){.secs{grid-template-columns:1fr 1fr}}
+@container (min-width:760px){.secs{grid-template-columns:1fr 1fr 1fr}}
+.secs li{border:1.5px solid var(--lila);border-radius:10px;padding:7px 9px;font-size:12.5px;line-height:1.4;color:var(--sec);cursor:pointer}
+.secs li b{display:block;color:var(--cob);font-size:14px}
+.secs li.cur{border-color:var(--cob);background:var(--lila)}
+.secs li.cur b::after{content:" · en pantalla";font-weight:500;color:var(--sec)}
+.tog{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:14px;cursor:pointer}
+.tog input{width:18px;height:18px;accent-color:var(--cob)}
+.log{list-style:none;margin:0;padding:0;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;max-height:220px;overflow:auto}
+.log li{display:grid;grid-template-columns:auto 1fr;gap:8px;padding:6px 0;border-bottom:1px solid var(--lila);color:var(--ink)}
+.log time{color:var(--sec)}
+.log .ev{font-weight:700;color:var(--cob)}
+.facts{display:grid;grid-template-columns:1fr;gap:8px;margin:0;padding:0;list-style:none;font-size:14px;color:var(--ink)}
+@container (min-width:560px){.facts{grid-template-columns:1fr 1fr}}
+.facts li{display:grid;grid-template-columns:10px 1fr;gap:10px}
+.facts li::before{content:"";width:10px;height:10px;margin-top:6px;background:var(--am);border-radius:2px}
+.foot{border-top:1.5px solid var(--line);padding:18px 0 28px;font-size:13px;color:var(--sec)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">Demo para Maitena · simulación</p>
+      <h1>Una plantilla, <span class="y">muchos productos</span></h1>
+      <p class="sub">Así se vería una landing armada con secciones nativas de Shopify. Cambiá de producto y mirá cómo la misma plantilla se llena sola.</p>
+    </div>
+    <button class="reset" id="reset" type="button">Reiniciar demo</button>
+  </div>
+</header>
+
+<nav class="switch" aria-label="Producto de ejemplo">
+  <div class="wrap" role="tablist" id="chips">
+    <span class="lbl">Producto de ejemplo:</span>
+    <p class="hint">Mismo código, otros datos: textos, precios, packs, preguntas y color salen de los campos del producto.</p>
+  </div>
+</nav>
+
+<main class="wrap stage">
+  <section class="side" aria-labelledby="ladoA">
+    <h2 id="ladoA">Lo que vive tu cliente</h2>
+    <div class="phone" id="phone">
+      <div class="screen" id="screen" tabindex="0" aria-label="Landing de ejemplo">
+        <div class="ann">Envío a todo el país · 10 días para arrepentirte</div>
+        <div class="lhead"><span class="logo">[Tu logo]</span>
+          <button class="cartbtn" id="cartBtn" type="button" aria-label="Abrir carrito">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+            <span class="badge" id="badge">0</span>
+          </button>
+        </div>
+
+        <section class="lsec" data-sec="landing-hero" id="s-hero">
+          <div class="media" id="media" role="img" aria-label="Video del producto"></div>
+          <div class="thumbs"><div>[Tu video]</div><div>[Foto en uso]</div><div>[Foto de la caja]</div></div>
+          <h1 class="pname" id="pName"></h1>
+          <p class="hook" id="pHook"></p>
+          <p class="stars"><b aria-hidden="true">★★★★★</b> [promedio] · [N] reseñas verificadas</p>
+          <div class="price"><strong id="pPrice"></strong><small id="pNet"></small></div>
+          <fieldset class="packs" id="packs"><legend>Elegí tu pack</legend></fieldset>
+          <button class="buy" id="buyMain" type="button">Agregar al carrito</button>
+          <ul class="trust">
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.5"/><circle cx="17" cy="17.5" r="1.5"/></svg>Envío a todo el país; el costo lo ves antes de pagar</li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 12a8 8 0 1 0 3-6.2M4 4v4h4"/></svg>10 días para arrepentirte: <a href="#" data-toast="En tu tienda, este enlace abre el formulario del botón de arrepentimiento.">botón de arrepentimiento</a></li>
+            <li><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>Pagás con Mercado Pago</li>
+          </ul>
+        </section>
+
+        <section class="lsec" data-sec="landing-beneficios" id="s-ben">
+          <h2>Por qué te va a servir</h2>
+          <div class="ben" id="ben"></div>
+        </section>
+
+        <section class="lsec" data-sec="landing-pasos" id="s-pasos">
+          <h2>Cómo se usa</h2>
+          <ol class="steps" id="steps"></ol>
+        </section>
+
+        <section class="lsec" data-sec="landing-comparativa" id="s-cmp">
+          <h2>Frente a lo de siempre</h2>
+          <table class="cmp" id="cmp"></table>
+        </section>
+
+        <section class="lsec" data-sec="landing-resenas" id="s-rev">
+          <h2>Lo que dicen quienes lo compraron</h2>
+          <div class="revs">
+            <div class="rev"><div class="ph">[Foto real del cliente]</div><div><b>Compra verificada</b><br>[Reseña real de un comprador, con su nombre y fecha]</div></div>
+            <div class="rev"><div class="ph">[Video real del cliente]</div><div><b>Compra verificada</b><br>[Otra reseña real, también las de menos estrellas]</div></div>
+          </div>
+          <p class="note">Las reseñas llegan de la app Judge.me, una por compra real.</p>
+        </section>
+
+        <section class="lsec offer" data-sec="landing-oferta" id="s-oferta">
+          <h2>Llevá más, pagá menos</h2>
+          <p id="vig"></p>
+          <div class="olist" id="olist"></div>
+        </section>
+
+        <section class="lsec" data-sec="landing-faq" id="s-faq">
+          <h2>Preguntas frecuentes</h2>
+          <div class="faq" id="faq"></div>
+        </section>
+
+        <section class="lsec legal" data-sec="landing-confianza" id="s-legal">
+          <div><b style="color:var(--ink)">[Razón social]</b> · CUIT [00-00000000-0] · [Domicilio]</div>
+          <div class="row">
+            <a href="#" data-toast="En tu tienda, este enlace lleva a tu política de privacidad.">Política de privacidad</a>
+            <a href="#" data-toast="En tu tienda, este enlace lleva a cambios y devoluciones.">Cambios y devoluciones</a>
+            <a href="#" data-toast="En tu tienda, este enlace lleva a envíos.">Envíos</a>
+            <a href="#" data-toast="En tu tienda, este enlace lleva a tu canal de atención.">Contacto</a>
+          </div>
+          <a href="#" class="arrep" data-toast="En tu tienda, este enlace abre el formulario del botón de arrepentimiento.">Botón de arrepentimiento</a>
+        </section>
+
+        <div class="sticky" data-sec="sticky-cta" id="sticky" aria-hidden="true">
+          <div class="si"><span id="stPack"></span><b id="stPrice"></b></div>
+          <button type="button" id="buySticky" tabindex="-1">Agregar al carrito</button>
+        </div>
+      </div>
+
+      <aside class="drawer" id="drawer" aria-label="Carrito" aria-hidden="true">
+        <header><b>Tu carrito</b><button class="x" id="closeCart" type="button" aria-label="Cerrar carrito">×</button></header>
+        <div class="lines" id="lines"></div>
+        <div class="dfoot">
+          <div class="tot"><span>Total</span><span id="total">$0</span></div>
+          <small>Precio final en pesos. El envío se calcula en el checkout.</small>
+          <button class="go" id="checkout" type="button">Ir a pagar</button>
+        </div>
+      </aside>
+      <div class="ck" id="ck" role="dialog" aria-label="Checkout">
+        <h3>Acá seguiría el checkout de Shopify</h3>
+        <p>En tu tienda, el pago es el checkout nativo de Shopify con Mercado Pago. La demo no simula pagos ni guarda datos.</p>
+        <button type="button" id="ckBack">Volver a la landing</button>
+      </div>
+      <div class="toast" id="toast" role="status"></div>
+    </div>
+  </section>
+
+  <section class="side" aria-labelledby="ladoB">
+    <h2 id="ladoB">Lo que pasa detrás, simulado</h2>
+    <div class="card">
+      <h3>Plantilla <code>product.landing.json</code> · <span id="nsec"></span> secciones nativas en Liquid</h3>
+      <p class="cap">Cada bloque de la landing es una sección propia, sin constructores. Tocá una para ir a ella.</p>
+      <ul class="secs" id="secs"></ul>
+      <label class="tog"><input type="checkbox" id="labels"> Mostrar el nombre de cada sección sobre la landing</label>
+    </div>
+    <div class="card">
+      <h3>Eventos que recibiría Meta</h3>
+      <p class="cap">Los mandaría la app oficial de Facebook e Instagram de Shopify; la landing no lleva código de píxel aparte.</p>
+      <ol class="log" id="log" reversed></ol>
+    </div>
+    <div class="card">
+      <h3>Por qué una landing nueva sale en 24 a 48 h</h3>
+      <ul class="facts">
+        <li>Un producto nuevo no se programa: se cargan sus datos y se le asigna la plantilla.</li>
+        <li>La imagen o video de arriba carga primero; el resto, a medida que bajás.</li>
+        <li>Los packs usan descuentos automáticos por cantidad de Shopify.</li>
+        <li>El carrito y el pago son los nativos de Shopify, con Mercado Pago.</li>
+      </ul>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap foot">
+  Demo preparada por Marco Celaya para Maitena. Es una simulación, no una tienda real: los productos, textos, precios y fechas son de ejemplo, y lo que va entre corchetes lo pondrías tú. En tu tienda, las reseñas serían reales (Judge.me) y el pago sería el checkout de Shopify con Mercado Pago.
+</footer>
+
+<script>
+const H = {"cliente": "Maitena", "proyecto": "Landings de Shopify para e-commerce/dropshipping, trabajo recurrente", "precio_por_landing_mxn": 850, "pago": "pago único contra aprobación de cada landing", "plazo_prueba": "48 h desde el acceso de colaborador y el material", "plazo_siguientes": "24 a 48 h según prioridad", "volumen": "8 a 12 landings al mes", "soporte_dias": 30, "plan": [{"dia": "miércoles 14 de octubre", "corto": "Mié 14", "que": "Accesos, tema duplicado sin publicar y plantilla product.landing.json"}, {"dia": "jueves 15 de octubre", "corto": "Jue 15", "que": "Secciones en Liquid y carga del primer producto con tu material"}, {"dia": "viernes 16 de octubre", "corto": "Vie 16", "que": "Pruebas en celular, velocidad y eventos de Meta; vista previa para que la apruebes"}], "pregunta_cierre": "¿Sería mala idea arrancar mañana miércoles 14 con la landing de prueba?", "oferta_ejemplo": "del lunes 19 al domingo 25 de octubre de 2026", "plantilla": "product.landing.json", "secciones": [{"id": "landing-hero", "nombre": "Arriba del todo", "que": "Video, título, reseñas, precio, packs y botón", "datos": "Medios del producto · metafield subtítulo · descuentos automáticos por cantidad"}, {"id": "landing-beneficios", "nombre": "Beneficios", "que": "4 beneficios con ícono", "datos": "Metaobjeto «beneficio» (lista en el producto)"}, {"id": "landing-pasos", "nombre": "Cómo se usa", "que": "3 pasos con imagen", "datos": "Metaobjeto «paso»"}, {"id": "landing-comparativa", "nombre": "Comparativa", "que": "Tu producto frente a la alternativa común", "datos": "Metaobjeto «comparativa»"}, {"id": "landing-resenas", "nombre": "Reseñas", "que": "Reseñas reales con foto", "datos": "Bloque de la app Judge.me (plan gratis)"}, {"id": "landing-oferta", "nombre": "Oferta con vigencia", "que": "Packs con fecha de inicio, fin y stock", "datos": "Metafields de fechas y stock"}, {"id": "landing-faq", "nombre": "Preguntas frecuentes", "que": "Envío, devolución, pago, qué incluye", "datos": "Metaobjeto «pregunta»"}, {"id": "landing-confianza", "nombre": "Confianza y datos legales", "que": "Envío, 10 días para arrepentirte, pago, botón de arrepentimiento", "datos": "Ajustes del tema (se cargan una vez)"}, {"id": "sticky-cta", "nombre": "Botón fijo", "que": "Aparece cuando el botón principal sale de pantalla", "datos": "Formulario de producto nativo de Shopify"}], "productos": [{"key": "aspiradora", "nombre": "Mini aspiradora inalámbrica 2 en 1", "corto": "Mini aspiradora", "gancho": "Aspira y sopla migas, pelos y polvo del auto en segundos, sin cables.", "acento": "#0E6B5C", "precios": [39990, 69990, 94990], "beneficios": [["Sin cables", "Se carga por USB-C y la llevás a cualquier lado."], ["2 en 1", "Aspira y también sopla el polvo de rendijas y teclados."], ["Filtro lavable", "Lo enjuagás con agua; no comprás repuestos."], ["Entra en la guantera", "Compacta y liviana para el auto."]], "pasos": [["Cargala", "Conectala por USB-C."], ["Elegí la boquilla", "Plana, cepillo o soplador."], ["Vaciá el depósito", "Un clic y listo."]], "comparativa": {"contra": "Aspiradora común", "filas": [["Sin cables", true, false], ["Entra en el auto", true, false], ["Sopla además de aspirar", true, false], ["Filtro lavable", true, "A veces"]]}, "incluye": "La aspiradora, 3 boquillas, cable USB-C y manual."}, {"key": "lampara", "nombre": "Lámpara LED recargable plegable", "corto": "Lámpara LED", "gancho": "Luz cálida o fría donde la necesites, sin enchufe y plegada en el cajón.", "acento": "#B4471B", "precios": [29990, 52990, 71990], "beneficios": [["3 tonos de luz", "Cálida, neutra o fría con un toque."], ["Recargable", "Batería interna con carga USB-C."], ["Se pliega", "Ocupa lo mismo que un libro."], ["Brillo regulable", "Mantené el dedo y ajustá la intensidad."]], "pasos": [["Desplegala", "Abrí el brazo hasta la altura que quieras."], ["Elegí el tono", "Tocá el sensor para cambiar."], ["Cargala", "Con el cable USB-C incluido."]], "comparativa": {"contra": "Velador común", "filas": [["Funciona sin enchufe", true, false], ["Se pliega", true, false], ["Cambia el tono de luz", true, "A veces"], ["Brillo regulable", true, "A veces"]]}, "incluye": "La lámpara, cable USB-C y manual."}, {"key": "botella", "nombre": "Botella térmica con indicador de temperatura", "corto": "Botella térmica", "gancho": "Sabé si tu mate o tu café está a punto antes de servirlo.", "acento": "#1C24B8", "precios": [24990, 43990, 59990], "beneficios": [["Indicador en la tapa", "Muestra la temperatura al tocarla."], ["Doble pared", "Acero inoxidable de doble capa."], ["500 ml", "Entra en la mochila y en el portavasos."], ["Tapa a rosca", "Cierre con burlete para llevarla en la mochila."]], "pasos": [["Llenala", "Agua, café o lo que quieras."], ["Tocá la tapa", "Se enciende el indicador."], ["Servite", "Cuando esté a la temperatura que te gusta."]], "comparativa": {"contra": "Termo común", "filas": [["Indicador de temperatura", true, false], ["Entra en el portavasos", true, "A veces"], ["Doble pared de acero", true, true], ["Tapa a rosca", true, true]]}, "incluye": "La botella con tapa e indicador, y manual."}]};
+const PACKS = ["1 unidad","2 unidades","3 unidades"];
+const S = {p:0, k:0, cart:[]};
+const $ = id => document.getElementById(id);
+const money = n => "$" + Math.round(n).toLocaleString("es-AR");
+const net = n => "$" + (n/1.21).toLocaleString("es-AR",{minimumFractionDigits:2,maximumFractionDigits:2});
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const prod = () => H.productos[S.p];
+const save = (P,k) => P.precios[0]*(k+1) - P.precios[k];
+
+function art(key, ac){
+  const sh = '<ellipse cx="160" cy="196" rx="112" ry="9" fill="#000" opacity=".07"/>';
+  if(key==="aspiradora") return `<svg viewBox="0 0 320 220" aria-hidden="true">${sh}<path d="M72 104 L20 97 L20 127 L72 120 Z" fill="#2A2C33"/><rect x="68" y="80" width="174" height="64" rx="32" fill="${ac}"/><rect x="150" y="88" width="58" height="48" rx="20" fill="#fff" opacity=".32"/><circle cx="179" cy="112" r="13" fill="#fff" opacity=".5"/><path d="M238 92 C292 92 298 150 248 150" stroke="#2A2C33" stroke-width="14" fill="none" stroke-linecap="round"/><rect x="104" y="71" width="28" height="11" rx="5.5" fill="#2A2C33"/></svg>`;
+  if(key==="lampara") return `<svg viewBox="0 0 320 220" aria-hidden="true">${sh}<path d="M196 78 L268 92 L254 186 L162 186 Z" fill="#FFD84D" opacity=".38"/><rect x="88" y="180" width="144" height="14" rx="7" fill="#2A2C33"/><path d="M160 180 L128 102 L196 62" stroke="#2A2C33" stroke-width="10" fill="none" stroke-linecap="round" stroke-linejoin="round"/><circle cx="128" cy="102" r="8" fill="#2A2C33"/><rect x="184" y="44" width="88" height="28" rx="14" fill="${ac}" transform="rotate(14 228 58)"/></svg>`;
+  return `<svg viewBox="0 0 320 220" aria-hidden="true">${sh}<rect x="126" y="54" width="68" height="142" rx="26" fill="${ac}"/><rect x="138" y="72" width="9" height="104" rx="4.5" fill="#fff" opacity=".25"/><rect x="130" y="18" width="60" height="40" rx="10" fill="#2A2C33"/><rect x="141" y="26" width="38" height="20" rx="4" fill="#BDF5DE"/><text x="160" y="41" text-anchor="middle" font-family="ui-monospace,monospace" font-size="13" font-weight="700" fill="#0B3B2E">65°</text></svg>`;
+}
+
+function chips(){
+  const box = $("chips");
+  H.productos.forEach((P,i)=>{
+    const b = document.createElement("button");
+    b.className = "chip"; b.type = "button"; b.role = "tab"; b.id = "chip-"+P.key;
+    b.textContent = P.corto; b.setAttribute("aria-selected", String(i===S.p));
+    b.addEventListener("click", ()=>{ setProduct(i); });
+    box.insertBefore(b, box.querySelector(".hint"));
+  });
+}
+
+function render(){
+  const P = prod();
+  document.documentElement.style.setProperty("--ac", P.acento);
+  document.querySelectorAll(".chip").forEach((c,i)=>c.setAttribute("aria-selected", String(i===S.p)));
+  $("media").innerHTML = art(P.key, P.acento) + '<span class="vidtag">[Tu video · 15 s, sin sonido]</span><span class="play" aria-hidden="true"><svg width="12" height="14" viewBox="0 0 12 14"><path d="M0 0 L12 7 L0 14 Z" fill="#14151A"/></svg></span>';
+  $("pName").textContent = P.nombre;
+  $("pHook").textContent = P.gancho;
+  $("packs").innerHTML = '<legend>Elegí tu pack</legend>' + P.precios.map((pr,k)=>`<label class="pack"><input type="radio" name="pack" value="${k}" ${k===S.k?"checked":""}><span><span class="pl">${PACKS[k]}</span>${k? `<span class="ps">Ahorrás ${money(save(P,k))}</span>`:""}</span><span class="pp">${money(pr)}</span></label>`).join("");
+  $("packs").querySelectorAll("input").forEach(r=>r.addEventListener("change", e=>setPack(+e.target.value)));
+  $("ben").innerHTML = P.beneficios.map((b,i)=>`<div><span class="n">0${i+1}</span><h3>${esc(b[0])}</h3><p>${esc(b[1])}</p></div>`).join("");
+  $("steps").innerHTML = P.pasos.map(s=>`<li><div><b>${esc(s[0])}</b><span>${esc(s[1])}</span></div></li>`).join("");
+  const cell = v => v===true ? '<span class="yes">Sí</span>' : v===false ? '<span class="no">No</span>' : `<span class="no">${esc(v)}</span>`;
+  $("cmp").innerHTML = `<thead><tr><th scope="col"><span class="sr">Característica</span></th><th scope="col" class="us">${esc(P.corto)}</th><th scope="col">${esc(P.comparativa.contra)}</th></tr></thead><tbody>` + P.comparativa.filas.map(f=>`<tr><th scope="row" style="font-weight:500">${esc(f[0])}</th><td>${cell(f[1])}</td><td>${cell(f[2])}</td></tr>`).join("") + "</tbody>";
+  $("vig").textContent = `Precios de los packs válidos ${H.oferta_ejemplo} o hasta agotar [N] unidades.`;
+  $("olist").innerHTML = P.precios.map((pr,k)=>`<div class="orow ${k===S.k?"sel":""}"><span><b>${PACKS[k]}</b> · ${money(pr)}${k?` <span style="color:var(--ac);font-weight:600">ahorrás ${money(save(P,k))}</span>`:""}</span><button type="button" data-k="${k}">${k===S.k?"Elegido":"Elegir"}</button></div>`).join("");
+  $("olist").querySelectorAll("button").forEach(b=>b.addEventListener("click", ()=>setPack(+b.dataset.k)));
+  const faqs = [
+    ["¿Cuánto tarda el envío?", "Te mostramos el plazo y el costo antes de pagar. [Tus tiempos y empresa de envío]."],
+    ["¿Puedo devolverlo?", "Sí. Tenés 10 días corridos desde que lo recibís para arrepentirte, desde el botón de arrepentimiento. El envío de vuelta corre por nuestra cuenta."],
+    ["¿Cómo pago?", "Con Mercado Pago: tarjeta de crédito o débito, o dinero en cuenta. Las cuotas disponibles y su costo financiero los ves al pagar."],
+    ["¿Qué trae la caja?", P.incluye],
+    ["¿Tiene garantía?", "Sí: 6 meses de garantía legal por ser un producto nuevo [o la tuya, si es mayor]."]
+  ];
+  $("faq").innerHTML = faqs.map((f,i)=>`<button type="button" aria-expanded="false" aria-controls="fa${i}" id="fq${i}">${esc(f[0])}</button><div class="ans" id="fa${i}">${esc(f[1])}</div>`).join("");
+  $("faq").querySelectorAll("button").forEach(b=>b.addEventListener("click", ()=>b.setAttribute("aria-expanded", String(b.getAttribute("aria-expanded")!=="true"))));
+  priceUI();
+}
+
+function priceUI(){
+  const P = prod(), pr = P.precios[S.k];
+  $("pPrice").textContent = money(pr);
+  $("pNet").textContent = `Precio sin impuestos nacionales: ${net(pr)}`;
+  $("buyMain").textContent = `Agregar al carrito · ${money(pr)}`;
+  $("stPack").textContent = `${P.corto} · ${PACKS[S.k]}`;
+  $("stPrice").textContent = money(pr);
+  $("packs").querySelectorAll("input").forEach(r=>{ r.checked = (+r.value===S.k); });
+  $("olist").querySelectorAll(".orow").forEach((row,k)=>{ row.classList.toggle("sel", k===S.k); row.querySelector("button").textContent = k===S.k ? "Elegido" : "Elegir"; });
+}
+
+function setPack(k){ S.k = k; priceUI(); }
+function setProduct(i){
+  S.p = i; S.k = 0; render(); $("screen").scrollTop = 0; onScroll();
+  log("ViewContent", `${prod().corto} · ${money(prod().precios[0])}`);
+}
+
+function log(ev, txt){
+  const li = document.createElement("li");
+  const t = new Date().toLocaleTimeString("es-AR",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+  li.innerHTML = `<time>${t}</time><span><span class="ev">${ev}</span> · ${esc(txt)}</span>`;
+  $("log").prepend(li);
+}
+
+function addToCart(){
+  const P = prod(), key = P.key + ":" + S.k;
+  const line = S.cart.find(l=>l.key===key);
+  if(line) line.qty++; else S.cart.push({key, p:S.p, k:S.k, qty:1});
+  log("AddToCart", `${P.corto} · ${PACKS[S.k]} · ${money(P.precios[S.k])}`);
+  cartUI(); openCart(true);
+}
+function cartTotal(){ return S.cart.reduce((a,l)=>a + H.productos[l.p].precios[l.k]*l.qty, 0); }
+function cartUI(){
+  $("badge").textContent = S.cart.reduce((a,l)=>a+l.qty,0);
+  $("total").textContent = money(cartTotal());
+  $("checkout").disabled = S.cart.length===0;
+  $("lines").innerHTML = S.cart.length ? S.cart.map((l,i)=>{ const P = H.productos[l.p]; return `<div class="line"><div class="th">${art(P.key,P.acento)}</div><div><div class="ln1">${esc(P.nombre)}</div><div class="ln2">${PACKS[l.k]} · ${money(P.precios[l.k])}</div><div class="qty"><button type="button" data-i="${i}" data-d="-1" aria-label="Quitar uno">−</button><span data-q="${i}">${l.qty}</span><button type="button" data-i="${i}" data-d="1" aria-label="Sumar uno">+</button><button type="button" class="rm" data-rm="${i}">Quitar</button></div></div></div>`; }).join("") : '<p class="empty">Tu carrito está vacío.</p>';
+  $("lines").querySelectorAll("button[data-d]").forEach(b=>b.addEventListener("click", ()=>{ const l = S.cart[+b.dataset.i]; l.qty += +b.dataset.d; if(l.qty<1) S.cart.splice(+b.dataset.i,1); cartUI(); }));
+  $("lines").querySelectorAll("button[data-rm]").forEach(b=>b.addEventListener("click", ()=>{ S.cart.splice(+b.dataset.rm,1); cartUI(); }));
+}
+function openCart(on){
+  $("drawer").classList.toggle("on", on); $("drawer").setAttribute("aria-hidden", String(!on));
+  if(on) $("closeCart").focus({preventScroll:true});
+  onScroll();
+}
+
+function secsUI(){
+  $("nsec").textContent = H.secciones.length;
+  $("secs").innerHTML = H.secciones.map(s=>`<li data-id="${s.id}" tabindex="0"><b>${esc(s.nombre)}</b><code>${s.id}</code><br>${esc(s.que)}. Se llena con: ${esc(s.datos)}.</li>`).join("");
+  $("secs").querySelectorAll("li").forEach(li=>{
+    const go = ()=>{ const el = document.querySelector(`[data-sec="${li.dataset.id}"]`); const sc = $("screen");
+      pin = li.dataset.id; pinAt = Date.now();
+      if(li.dataset.id==="sticky-cta"){ sc.scrollTop = $("s-ben").offsetTop; } else { sc.scrollTop = el.offsetTop - 44; } onScroll(); };
+    li.addEventListener("click", go); li.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go(); } });
+  });
+}
+
+let ticking = false, pin = null, pinAt = 0;
+function onScroll(){
+  if(ticking) return; ticking = true;
+  requestAnimationFrame(()=>{
+    ticking = false;
+    const sc = $("screen"), top = sc.getBoundingClientRect().top;
+    const b = $("buyMain").getBoundingClientRect();
+    const show = b.bottom < top + 50 && !$("drawer").classList.contains("on");
+    $("sticky").classList.toggle("on", show); $("sticky").setAttribute("aria-hidden", String(!show));
+    $("buySticky").tabIndex = show ? 0 : -1;
+    const mark = top + sc.clientHeight * 0.35;
+    let cur = "landing-hero";
+    document.querySelectorAll(".lsec[data-sec]").forEach(s=>{ if(s.getBoundingClientRect().top <= mark) cur = s.dataset.sec; });
+    if(pin && Date.now() - pinAt < 1200 && pin !== "sticky-cta") cur = pin;
+    document.querySelectorAll(".lsec").forEach(s=>s.classList.toggle("cur", s.dataset.sec===cur));
+    document.querySelectorAll("#secs li").forEach(li=>li.classList.toggle("cur", li.dataset.id===cur || (show && li.dataset.id==="sticky-cta")));
+  });
+}
+
+let tt;
+function toast(msg){ const t = $("toast"); t.textContent = msg; t.classList.add("on"); clearTimeout(tt); tt = setTimeout(()=>t.classList.remove("on"), 2600); }
+
+function reset(){
+  S.p = 0; S.k = 0; S.cart = []; $("log").innerHTML = ""; $("labels").checked = false; $("screen").classList.remove("show-labels");
+  $("ck").classList.remove("on"); openCart(false); render(); cartUI(); $("screen").scrollTop = 0;
+  log("ViewContent", `${prod().corto} · ${money(prod().precios[0])}`); onScroll();
+}
+
+chips(); secsUI(); render(); cartUI();
+log("ViewContent", `${prod().corto} · ${money(prod().precios[0])}`);
+$("screen").addEventListener("scroll", onScroll, {passive:true});
+window.addEventListener("resize", onScroll);
+$("buyMain").addEventListener("click", addToCart);
+$("buySticky").addEventListener("click", addToCart);
+$("cartBtn").addEventListener("click", ()=>openCart(true));
+$("closeCart").addEventListener("click", ()=>openCart(false));
+$("checkout").addEventListener("click", ()=>{ if(!S.cart.length) return; log("InitiateCheckout", `${S.cart.reduce((a,l)=>a+l.qty,0)} artículos · ${money(cartTotal())}`); $("ck").classList.add("on"); $("ckBack").focus({preventScroll:true}); });
+$("ckBack").addEventListener("click", ()=>{ $("ck").classList.remove("on"); openCart(false); });
+$("labels").addEventListener("change", e=>$("screen").classList.toggle("show-labels", e.target.checked));
+$("reset").addEventListener("click", reset);
+document.addEventListener("click", e=>{ const a = e.target.closest("[data-toast]"); if(a){ e.preventDefault(); toast(a.dataset.toast); } });
+document.addEventListener("keydown", e=>{ if(e.key==="Escape"){ if($("ck").classList.contains("on")) $("ck").classList.remove("on"); else openCart(false); } });
+onScroll();
+</script>
+</body>
+</html>
